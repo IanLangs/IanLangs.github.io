@@ -1,10 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <title>IanLangs</title>
-  </head>
-  <body>
-    <p>hello world</p>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IanLangs — Cognalian & Ian Markup Language</title>
+  <meta name="description" content="IanLangs: proyectos, Cognalian (micro-estudio) e Ian Markup Language. Página oficial de ejemplo."/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🧠</text></svg>">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="primary-1">
+  <div class="wrap" role="document">
+    <header class="site-header">
+      <a class="brand" href="#">
+        <div class="logo">IL</div>
+        <div>
+          <h1>IanLangs</h1>
+          <p>Lenguajes y proyectos</p>
+        </div>
+      </a>
+      <nav class="top-nav">
+        <a class="nav-link active" href="#ianlangs">IanLangs</a>
+        <a class="nav-link" href="#cognalian">Cognalian</a>
+        <a class="nav-link" href="#ianml">IanML</a>
+      </nav>
+    </header>
+
+    <section class="hero card">
+      <div class="intro">
+        <h2>Bienvenido a IanLangs</h2>
+        <p>Un ecosistema de ideas, lenguajes y experimentos digitales creados con pasión.</p>
+        <div class="cta">
+          <button class="btn" onclick="changePrimary(1)">Color 1</button>
+          <button class="btn" onclick="changePrimary(2)">Color 2</button>
+          <button class="btn" onclick="changePrimary(3)">Color 3</button>
+        </div>
+      </div>
+    </section>
+
+    <main>
+      <div class="grid-3">
+        <section id="ianlangs" class="card">
+          <div class="feature-title">
+            <div class="feature-icon">🧩</div>
+            <h3>¿Qué es IanLangs?</h3>
+          </div>
+          <p>IanLangs es una organización dedicada a crear y experimentar con nuevos lenguajes, conceptos y herramientas de programación. Su misión es combinar simplicidad y poder expresivo en cada proyecto.</p>
+        </section>
+
+        <section id="cognalian" class="card">
+          <div class="feature-title">
+            <div class="feature-icon">🧠</div>
+            <h3>¿Qué es Cognalian?</h3>
+          </div>
+          <p>Cognalian es un micro-estudio creativo dentro de IanLangs. Su enfoque es explorar la inteligencia, el aprendizaje automático y la creación de herramientas que potencien la comprensión del código.</p>
+        </section>
+
+        <section id="ianml" class="card">
+          <div class="feature-title">
+            <div class="feature-icon">📝</div>
+            <h3>¿Qué es Ian Markup Language?</h3>
+          </div>
+          <p>Ian Markup Language (IanML) es un lenguaje de marcado propio, diseñado para ser claro, flexible y fácil de integrar. Su objetivo es mejorar la comunicación entre humanos y máquinas sin complicaciones.</p>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <span>© 2025 IanLangs. Todos los derechos reservados.</span>
+      <span>Diseñado con 💜 en Argentina</span>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
 </html>
