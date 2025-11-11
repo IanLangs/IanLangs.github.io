@@ -7,15 +7,9 @@
   --gap: 1.0rem;
   --maxw: 1100px;
   --ff-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  --accent-1: #7b2cbf;
-  --accent-2: #2d6cdf;
-  --accent-3: #e85d75;
+  --accent: #7b2cbf;
   --text: #e8eef6;
 }
-
-body.primary-1 { --accent: var(--accent-1); }
-body.primary-2 { --accent: var(--accent-2); }
-body.primary-3 { --accent: var(--accent-3); }
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
@@ -69,6 +63,7 @@ nav.top-nav { display: flex; gap: .6rem; align-items: center; }
   text-decoration: none;
   padding: .45rem .65rem;
   border-radius: 10px;
+  transition: 0.25s;
 }
 
 .nav-link:hover, .nav-link.active {
