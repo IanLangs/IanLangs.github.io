@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ian Markup Language (IML)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="wrap">
+    <header class="site-header">
+      <a href="#" class="brand">
+        <div class="logo">IML</div>
+        <div>
+          <h1>Ian Markup Language</h1>
+          <p>Lenguaje de marcado inteligente inspirado en Markdown</p>
+        </div>
+      </a>
+      <nav class="top-nav">
+        <a href="#intro" class="nav-link active">Inicio</a>
+        <a href="#sintaxis" class="nav-link">Sintaxis</a>
+        <a href="#funciones" class="nav-link">Funciones</a>
+        <a href="#ejemplo" class="nav-link">Ejemplo</a>
+      </nav>
+    </header>
+
+    <section id="intro" class="card">
+      <h2>¿Qué es IML?</h2>
+      <p>
+        <b>Ian Markup Language (IML)</b> es un lenguaje de marcado moderno diseñado para ampliar Markdown.
+        Permite usar variables, módulos, encabezados personalizados y bloques multimedia interactivos.
+      </p>
+      <p>
+        Todo documento IML puede compilarse a HTML usando un motor propio, manteniendo el control del <i>head</i>, los títulos y los bloques visuales.
+      </p>
+    </section>
+
+    <section id="sintaxis" class="card">
+      <h2>Sintaxis base</h2>
+
+      <h3>Encabezados centrados</h3>
+      <pre><code>
+@   Título 1 centrado
+@@  Título 2 centrado
+@@@ Título 3 centrado
+      </code></pre>
+
+      <h3>Constantes globales</h3>
+      <p>Permiten definir variables reutilizables durante la compilación:</p>
+      <pre><code>
+--const -name "IanLangs"
+--const -color "#a05cf5"
+      </code></pre>
+
+      <h3>Uso de archivos externos</h3>
+      <p>Importa módulos o funciones desde otros archivos IML comprimidos (.imlf):</p>
+      <pre><code>
+--use components.imlf
+      </code></pre>
+
+      <h3>Título de la página</h3>
+      <pre><code>
+--title "Documentación de IML"
+      </code></pre>
+
+      <h3>Etiquetas personalizadas del head</h3>
+      <pre><code>
+--head &lt;meta name="author" content="Ian"&gt;
+--head &lt;link rel="icon" href="favicon.ico"&gt;
+      </code></pre>
+    </section>
+
+    <section id="funciones" class="card">
+      <h2>Funciones visuales</h2>
+
+      <h3>Videos integrados</h3>
+      <p>La sintaxis <code>!![autoplay](url)</code> permite insertar un video directamente en el documento:</p>
+      <pre><code>
+!![autoplay](https://ejemplo.com/video.mp4)
+      </code></pre>
+      <p>En HTML se traduce a un bloque visible con <code>&lt;video autoplay controls&gt;</code>.</p>
+
+      <h3>Bloques de código tipo Mermaid</h3>
+      <p>
+        Los bloques de código Mermaid no se renderizan como texto, sino como diagramas interactivos.
+      </p>
+      <pre><code>
+```mermaid
+graph TD
+  A[Inicio] --> B{Condición}
+  B -->|Sí| C[Resultado 1]
+  B -->|No| D[Resultado 2]
+```
+  </code></pre>
+  <p>
+    Este documento, al compilarse, genera una página HTML lista para publicar, con video, diagrama y metadatos en el <code>&lt;head&gt;</code>.
+  </p>
+</section>
+
+<footer>
+  <span>© 2025 Ian Markup Language — Proyecto de Ian</span>
+  <span>Versión 1.0 experimental</span>
+</footer>
