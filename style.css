@@ -50,3 +50,8 @@ footer a:hover {
     color: green;
     font-weight: bold;
 }
+
+.Destacado {
+    color: orange;
+    font-weight: superbold;
+}
