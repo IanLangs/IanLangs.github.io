@@ -45,3 +45,8 @@ footer a {
 footer a:hover {
     color: #d662d6;
 }
+
+.Solucionado {
+    color: green;
+    font-weight: bold;
+}
