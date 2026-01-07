@@ -25,12 +25,22 @@ const projects = {
 
   ipm: {
     rname:"ipm",
-    title:"Descargar imp",
+    title:"Descargar ipm",
     desc:"Puedes descargar la última versión de ipm desde el siguiente enlace:",
     downloads: [
       { label: "Linux", file: "./ipm.deb" }
     ],
-    github:""
+    github:"https://github.com/IanLangs/ipm"
+  },
+
+  cink: {
+    rname:"c-ink",
+    title:"Descargar c-ink",
+    desc:"Puedes descargar la última versión de ipm desde el siguiente enlace:",
+    downloads: [
+      { label: "Linux", file: "./cink.deb" }
+    ],
+    github:"https://github.com/IanLangs/c-ink"
   },
 };
 
