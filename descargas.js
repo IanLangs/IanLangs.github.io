@@ -21,7 +21,17 @@ const projects = {
       { label: "Linux", file: "./PMAKElinux.zip" }
     ],
     github: "https://www.github.com/IanLangs/PMAKE"
-  }
+  },
+
+  ipm: {
+    rname:"ipm",
+    title:"Descargar imp",
+    desc:"Puedes descargar la última versión de ipm desde el siguiente enlace:",
+    downloads: [
+      { label: "Linux", file: "./ipm.deb" }
+    ],
+    github:""
+  },
 };
 
 const app = document.getElementById("app");
