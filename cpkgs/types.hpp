@@ -7,6 +7,8 @@
 #include <functional>
 #include <sstream>
 #include <type_traits>
+#include <optional>
+
 namespace type {
     using std::vector;
     using std::map;
@@ -16,7 +18,18 @@ namespace type {
 
     using number = long double;
     using boolean = bool;
+    using void_t = void;
+    
+    using std::optional;
+
+    template <typename T>
+    using ptr = T*;
 }
+
+// =======================
+// concat con separador
+// =======================
+
 template<typename... Args>
 type::str SepConcat(const type::str& sep, const Args&... args) {
     std::ostringstream oss;
@@ -25,15 +38,23 @@ type::str SepConcat(const type::str& sep, const Args&... args) {
     return oss.str();
 }
 
+// =======================
+// concat sin separador
+// =======================
+
 template<typename... Args>
 type::str concat(const Args&... args) {
     return SepConcat("", args...);
 }
 
+// =======================
+// get<T>(value)
+// =======================
+
 template<typename T, typename U>
 T get(const U& value) {
     if constexpr (std::is_same_v<T, type::str>) {
-        if constexpr (std::is_same_v<U, str>)
+        if constexpr (std::is_same_v<U, type::str>)
             return value;
         else
             return std::to_string(value);
