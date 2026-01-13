@@ -67,9 +67,16 @@ pre[class*="language-bash"] code {
 # Instalar MathScript
 npm install @ianlangs/mathscript --save
 
-# Ejecutar archivos MS usando el comando msc
+# Transpilar archivos con archivo de configuracion
 msc --init archivo1.ms archivo2.ms
-msc --transpile archivo1.ms archivo2.ms
+msc # o msc msconfig.json
+
+
+# sin archivo de configuración
+msc --transpile archivo1.ms archivo2.ms # en vez de --transpile se puede usar -t
+
+# O si quierers ejecutar un archivo
+ms-node archivo1.ms # los imports o require deben estar ya transpilados a js
 </code></pre>
 </section>
 
