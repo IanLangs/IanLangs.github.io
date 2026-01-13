@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MathScript - Documentación</title>
+<link rel="stylesheet" href="../style.css">
+
+<!-- Prism.js CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-okaidia.min.css" />
+
+<!-- Prism.js JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/components/prism-bash.min.js"></script>
+
+<style>
+/* Ajustes para bloques de bash en documentación */
+pre[class*="language-bash"] {
+    background-color: #1e1e1e;  /* fondo negro */
+    color: #f8f8f2;            /* color de texto base */
+    font-family: 'Courier New', Courier, monospace; /* fuente monoespaciada */
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+/* Ajuste de Prism para resaltar sintaxis dentro del bloque */
+pre[class*="language-bash"] code {
+    color: inherit;
+}
+</style>
+
+</head>
+<body>
+<header>
+    <h1 style="color: #f0f0f0; padding-left: 2%;">MathScript - Documentación Oficial</h1>
+</header>
+
+<main>
+<section>
+    <h2>Introducción</h2>
+    <p>MathScript (MS) es un superset de JavaScript que añade variables mutables e inmutables, funciones simples y tipado opcional.</p>
+</section>
+
+<section>
+    <h2>Cambios respecto a JavaScript</h2>
+    <ul>
+        <li><strong>fn</strong>: define funciones (equivale a <code>function</code>).</li>
+        <li><strong>mut / immut</strong>: Variables mutables e inmutables con <code>.get()</code> y <code>.set()</code>.</li>
+        <li><strong>Tipado opcional (::tipo)</strong>: decorativo, no cambia ejecución.</li>
+        <li><strong>using(...)</strong>: transpila a <code>require(...)</code>. Solo funciona en Node.js; <strong>no sirve en el navegador</strong>.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Cosas que funcionan pero no se recomiendan</h2>
+    <ul>
+        <li>Redefinir funciones o variables en el mismo scope sin IIFE puede causar errores.</li>
+        <li>Usar <code>using()</code> en navegador no hace nada.</li>
+        <li>Depender de <code>eval</code> para ejecución.</li>
+    </ul>
+</section>
+
+<section>
+    <h2>Instalación con npm</h2>
+<pre class="language-bash"><code >
+# Instalar MathScript
+npm install @ianlangs/mathscript --save
+
+# Ejecutar archivos MS usando el comando msc
+msc --init archivo1.ms archivo2.ms
+msc --transpile archivo1.ms archivo2.ms
+</code></pre>
+</section>
+
+<section>
+    <h2>Playground Online</h2>
+    <p>Prueba tu código MS en: <a href="./playground.html">MathScript Playground</a></p>
+</section>
+</main>
+
+<footer>
+MathScript &copy; 2026 - <a href="https://github.com/IanLangs/Mathscript">Repositorio GitHub</a>
+</footer>
+</body>
+</html>
