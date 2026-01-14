@@ -78,6 +78,14 @@ msc --transpile archivo1.ms archivo2.ms # en vez de --transpile se puede usar -t
 # O si quierers ejecutar un archivo
 ms-node archivo1.ms # los imports o require deben estar ya transpilados a js
 </code></pre>
+
+    <h2>MS package manager</h2>
+
+<pre class="language-bash"><code>
+mpm -n &lt;package&gt; # npm install package
+mpm -i &lt;package&gt; # curl -fsSL https://ianlangs.github.io/mpm-ms/&lt;package&gt;.ms -o ./ms_modules/&lt;package&gt;
+mpm -i -c &lt;url&gt; # curl -fsSL url
+</code></pre>
 </section>
 
 <section>
