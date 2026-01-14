@@ -22,7 +22,7 @@
 <main>
 <textarea id="editor" placeholder="Escribe tu código MathScript aquí...">
 // Ejemplo MS:
-mut x = 5
+let x = 5
 console.log(x)
 x =  10
 console.log(x)
@@ -37,27 +37,6 @@ console.log(saludo("Ian"))
 <button id="runButton">Transpilar y Ejecutar</button>
 <div id="console"></div>
 
-<section id="docs">
-<h2>Guía rápida de MathScript</h2>
-<ul>
-    <li><strong>fn</strong>: define funciones (equivale a function).</li>
-    <li><strong>mut / immut</strong>: Variables mutables e inmutables.</li>
-    <li><strong>::tipado</strong>: Notación decorativa.</li>
-    <li><strong>using()</strong>: transpila a require(), ignorado en navegador.</li>
-</ul>
-<h3>Cambios respecto a JS</h3>
-<ul>
-    <li>Tipado opcional.</li>
-    <li>Variables mutables e inmutables gestionadas vía objetos.</li>
-    <li>Funciones definidas con <code>fn</code>.</li>
-</ul>
-<h3>Cosas que funcionan pero no se recomiendan</h3>
-<ul>
-    <li>Redefinir variables o funciones sin IIFE.</li>
-    <li>Usar <code>using()</code> en navegador. Este si puede dar error</li>
-    <li>Dependencia de <code>eval</code> para ejecución.</li>
-</ul>
-</section>
 </main>
 
 <footer>
