@@ -1,43 +1,45 @@
-import { transpile } from "./web-t.js"
+// playground.js
+import { transpileWeb } from './web-transpile.js';
 
-const editor = document.getElementById("editor")
-const runButton = document.getElementById("runButton")
-const consoleDiv = document.getElementById("console")
+const editor = document.getElementById('editor');
+const runButton = document.getElementById('runButton');
+const consoleDiv = document.getElementById('console');
+
+function printConsole(msg, type="log") {
+    const p = document.createElement('pre');
+    p.textContent = msg;
+    p.className = type;
+    consoleDiv.appendChild(p);
+}
 
 function clearConsole() {
-    consoleDiv.innerHTML = ""
+    consoleDiv.innerHTML = '';
 }
 
-function logToConsole(msg) {
-    const line = document.createElement("div")
-    line.textContent = msg
-    consoleDiv.appendChild(line)
-}
-
-runButton.addEventListener("click", () => {
-    clearConsole()
-
-    const code = editor.value
-
-    const result = transpile(code, "playground.ms")
-
-    if (result.errors.length > 0) {
-        result.errors.forEach(err => logToConsole(err))
-        return
-    }
-
-    // Capturar console.log
-    const originalLog = console.log
-    console.log = (...args) => {
-        logToConsole(args.join(" "))
-        originalLog(...args)
+runButton.addEventListener('click', () => {
+    clearConsole();
+    const codeMS = editor.value;
+    let js;
+    try {
+        js = transpileWeb(codeMS, "<playground>");
+        printConsole(js, "transpiled");
+    } catch(e) {
+        printConsole(e.message, "error");
+        return;
     }
 
     try {
-        eval(result.code)
-    } catch (e) {
-        logToConsole("[RUNTIME ERROR] " + e.message)
+        const _console = console;
+        const sandbox = {
+            console: {
+                log: (...args) => printConsole(args.join(' '), "log"),
+                error: (...args) => printConsole(args.join(' '), "error"),
+                warn: (...args) => printConsole(args.join(' '), "warn")
+            }
+        };
+        const fn = new Function("console", js);
+        fn(sandbox.console);
+    } catch(e) {
+        printConsole(e.message, "error");
     }
-
-    console.log = originalLog
-})
+});

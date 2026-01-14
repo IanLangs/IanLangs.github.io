@@ -1,90 +1,63 @@
-export function transpile(code, filename = "<input>") {
-    code = code
-        .replace(/::[^=\n\(\)]*/g, "")
-        .replace(/\bfn\b/g, "function")
-
-    const lines = code.split('\n')
-    const vars = new Map()
-    const output = []
-    const errors = []
+// web-transpile.js
+export function transpileWeb(code, filename = "<input>") {
+    const lines = code.split('\n');
+    const vars = new Map();
+    const output = [];
 
     function error(line, msg) {
-        errors.push(`[MS ERROR] ${filename}:${line}  ${msg}`)
+        throw new Error(`[MS ERROR] ${filename}:${line}\n  ${msg}`);
     }
 
     for (let i = 0; i < lines.length; i++) {
-        const raw = lines[i]
-        const line = raw.trim()
-        const ln = i + 1
+        const raw = lines[i];
+        const line = raw.trim();
+        const ln = i + 1;
 
         if (!line) {
-            output.push(raw)
-            continue
+            output.push(raw);
+            continue;
         }
 
-        let m = line.match(/^mut\s+([a-zA-Z_]\w*)\s*=\s*(.+)$/)
+        let m = line.match(/^let\s+([a-zA-Z_]\w*)\s*=\s*(.+)$/);
         if (m) {
-            const name = m[1]
-            const value = m[2]
+            const name = m[1];
+            if (vars.has(name)) error(ln, `'${name}' ya está declarada`);
+            vars.set(name, { mutable: true });
+            output.push(raw);
+            continue;
+        }
 
-            if (vars.has(name)) {
-                error(ln, `'${name}' ya está declarada`)
+        m = line.match(/^immut\s+([a-zA-Z_]\w*)$/);
+        if (m) {
+            const name = m[1];
+            if (!vars.has(name)) error(ln, `'${name}' no está declarada`);
+            const info = vars.get(name);
+            if (!info.mutable) error(ln, `'${name}' no es mutable`);
+            info.mutable = false;
+            continue;
+        }
+
+        m = line.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/);
+        if (m) {
+            const name = m[1];
+            if (vars.has(name) && !vars.get(name).mutable) {
+                error(ln, `'${name}' es inmutable`);
             }
-
-            vars.set(name, { mutable: true })
-            output.push(`let ${name} = ${value}`)
-            continue
+            output.push(raw);
+            continue;
         }
 
-        m = line.match(/^immut\s+([a-zA-Z_]\w*)$/)
+        m = line.match(/^const\s+([a-zA-Z_]\w*)\s*=/);
         if (m) {
-            const name = m[1]
-
-            if (!vars.has(name)) {
-                error(ln, `'${name}' no está declarada`)
-            } else {
-                const info = vars.get(name)
-                if (!info.mutable) {
-                    error(ln, `'${name}' no es mutable`)
-                } else {
-                    info.mutable = false
-                }
-            }
-            continue
+            vars.set(m[1], { mutable: false });
+            output.push(raw);
+            continue;
         }
 
-        m = line.match(/^([a-zA-Z_]\w*)\s*=\s*(.+)$/)
-        if (m) {
-            const name = m[1]
-            if (vars.has(name)) {
-                const info = vars.get(name)
-                if (!info.mutable) {
-                    error(ln, `'${name}' es inmutable`)
-                }
-            }
-            output.push(raw)
-            continue
-        }
-
-        m = line.match(/^let\s+([a-zA-Z_]\w*)\s*=/)
-        if (m) {
-            vars.set(m[1], { mutable: true })
-            output.push(raw)
-            continue
-        }
-
-        m = line.match(/^const\s+([a-zA-Z_]\w*)\s*=/)
-        if (m) {
-            vars.set(m[1], { mutable: false })
-            output.push(raw)
-            continue
-        }
-
-        output.push(raw)
+        output.push(line.replace(/\bfn\b/g, "function"));
     }
 
-    return {
-        code: output.join('\n'),
-        errors
-    }
+    return output.join('\n');
 }
+
+export default { transpileWeb };
