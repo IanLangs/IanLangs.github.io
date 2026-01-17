@@ -77,7 +77,7 @@ namespace types {
     using bytes = std::array(byte, N);
 
     template<size_t N>
-    using bits = std::bitset;
+    using bits = std::bitset<N>;
 
     using u8char  = bytes<1>;   
     using u16char = bytes<2>;   
