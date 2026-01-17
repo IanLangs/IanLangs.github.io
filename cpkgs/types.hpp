@@ -14,6 +14,8 @@
 #include <boost/multiprecision/cpp_int.hpp>
 #include <boost/multiprecision/cpp_bin_float.hpp>
 #include <boost/multiprecision/cpp_dec_float.hpp>
+#include <any>
+
 namespace types {
     using str = std::string;
 
@@ -25,6 +27,8 @@ namespace types {
 
     template<typename T>
     using optional = std::optional<T>;
+
+    inline std::nullopt_t None = std::nullopt;
 
     template<typename... Ts>
     using union_t = std::variant<Ts...>;
@@ -109,6 +113,20 @@ namespace types {
 
     template<typename T>
     using weak_ptr = std::weak_ptr<T>;
+
+    template<typename T>
+    using type_ptr = T*
+
+    using std::any;
+
+    template<typename T>
+    T get(any obj) {
+        return std::any_cast<T>(obj);
+    }
+    template<typename T>
+    T get(union_t obj)  {
+        return std::get<T>(obj);
+    }
 
     template<typename... Ts>
     using tuple = std::tuple<Ts...>;
