@@ -1,63 +1,39 @@
 #pragma once
-
-#include <vector>
-#include <map>
 #include <string>
-#include <ostream>
-#include <functional>
-#include <sstream>
-#include <type_traits>
+#include <vector>
+#include <unordered_map>
 #include <optional>
-#include <boost/multiprecision/cpp_int.hpp>
-#include <cmath>
+#include <variant>
+#include <complex>
+#include <bitset>
 #include <array>
+#include <cstdint>
+#include <type_traits>
+#include <memory>
+#include <tuple>
+#include <boost/multiprecision/cpp_int.hpp>
+#include <boost/multiprecision/cpp_bin_float.hpp>
+#include <boost/multiprecision/cpp_dec_float.hpp>
+namespace types {
+    using str = std::string;
 
-namespace backend {
+    template<typename T>
+    using list = std::vector<T>;
 
-    // ================= SIGN =================
+    template<typename K, typename V>
+    using dict = std::unordered_map<K, V>;
 
-    class Sign {
-        bool positive = true;
+    template<typename T>
+    using optional = std::optional<T>;
 
-    public:
-        Sign() = default;
-        Sign(bool v) : positive(v) {}
-        Sign(long double v) : positive(v >= 0) {}
+    template<typename... Ts>
+    using union_t = std::variant<Ts...>;
 
-        int get() const { return positive ? 1 : -1; }
-        bool is_positive() const { return positive; }
-        bool is_negative() const { return !positive; }
+    template<typename T>
+    using complex = std::complex<T>;
 
-        template <typename T>
-        auto operator*(T other) const {
-            return get() * other;
-        }
-    };
-
-    // ================= MEB STRUCT =================
-
-    struct MEB {
-        long double mantissa; // ∈ [1, 2)
-        int exponent;
-        int base;
-    };
-
-    // ================= EXTRACTION =================
-
-    inline MEB get_MEB(long double v) {
-        int exp;
-        long double m = std::frexp(std::fabs(v), &exp);
-        // frexp da mantissa en [0.5, 1), la pasamos a [1, 2)
-        m *= 2;
-        exp -= 1;
-
-        return { m, exp, 2 };
-    }
-
-    // ================= BIG INT =================
-
-    template <unsigned Bits>
-    using intN = boost::multiprecision::number<
+    template<unsigned Bits>
+    using int_s = boost::multiprecision::number<
         boost::multiprecision::cpp_int_backend<
             Bits, Bits,
             boost::multiprecision::signed_magnitude,
@@ -66,36 +42,83 @@ namespace backend {
         >
     >;
 
-}
+    template<unsigned Bits>
+    using int_u = boost::multiprecision::number<
+        boost::multiprecision::cpp_int_backend<
+            Bits, Bits,
+            boost::multiprecision::unsigned_magnitude,
+            boost::multiprecision::unchecked,
+            void
+        >
+    >;
 
-namespace type {
-    template <unsigned long MB, unsigned long EB, bool S>
-    class number {
-    private:
-        long double mantissa;   // por ahora real
-        backend::intN<EB> exponent;
-        backend::Sign sign;
+    template<unsigned Bits>
+    using int_t = int_s<Bits>;
 
-    public:
-        number(long double v) : sign(v) {
-            auto meb = backend::get_MEB(v);
-            mantissa = meb.mantissa;
-            exponent = meb.exponent;
-        }
-    };
+    template<unsigned Bits>
+    using uint_t = int_u<Bits>;
 
+    template<unsigned MantissaBits>
+    using float_bin = boost::multiprecision::cpp_bin_float<MantissaBits>;
 
-    using std::vector;
-    using std::map;
-    using str = std::string;
-    using wstr = std::wstring;
-    using std::function;
+    template<unsigned Digits>
+    using float_dec = boost::multiprecision::cpp_dec_float<Digits>;
 
-    using boolean = bool;
-    using void_t = void;
+    template<unsigned N>
+    using float_t = float_bin<N>;   
 
-    using std::optional;
+    template<unsigned N>
+    using float_td = float_dec<N>;  
 
-    template <typename T>
-    using ptr = T*;
-}
+    using bit  = uint_t<1>;
+    using byte = std::uint8_t;
+
+    template<size_t N>
+    using bytes = std::array(byte, N);
+
+    template<size_t N>
+    using bits = std::bitset;
+
+    using u8char  = bytes<1>;   
+    using u16char = bytes<2>;   
+    using u32char = bytes<4>;   
+
+    using i8  = int_t<8>;
+    using i16 = int_t<16>;
+    using i32 = int_t<32>;
+    using i64 = int_t<64>;
+
+    using u8  = uint_t<8>;
+    using u16 = uint_t<16>;
+    using u32 = uint_t<32>;
+    using u64 = uint_t<64>;
+
+    using f16  = float_t<16>;
+    using f32  = float_t<32>;
+    using f64  = float_t<64>;
+    using f128 = float_t<128>;
+  
+    using usize = std::size_t;
+    using isize = std::make_signed_t<std::size_t>;
+
+    template<typename T>
+    using shared_ptr = std::shared_ptr<T>;
+
+    template<typename T>
+    using unique_ptr = std::unique_ptr<T>;
+
+    template<typename T>
+    using weak_ptr = std::weak_ptr<T>;
+
+    template<typename... Ts>
+    using tuple = std::tuple<Ts...>;
+
+    template<typename T1, typename T2>
+    using pair = std::pair<T1, T2>;
+
+    using KiB = bytes<1024>;
+    using MiB = bytes<1048576>;
+    inline constexpr byte BYTE_MAX = 0xFF;
+    inline constexpr bit  BIT_TRUE = true;
+    inline constexpr bit  BIT_FALSE = false;
+} 
