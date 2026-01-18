@@ -1,4 +1,5 @@
-#pragma once
+export module peaceFull;
+
 #include <iostream>
 #include <vector>
 #include <map>
@@ -9,10 +10,10 @@
 #include <initializer_list>
 #include <optional>
 
-namespace peaceFull {
+export namespace peaceFull {
 
     // --- INPUT ---
-    inline std::string input(const std::string& prompt="") {
+    export inline std::string input(const std::string& prompt="") {
         std::string s;
         if(!prompt.empty()) std::cout << prompt;
         std::getline(std::cin, s);
@@ -20,7 +21,7 @@ namespace peaceFull {
     }
 
     // --- STR ---
-    template<typename T>
+    export template<typename T>
     std::string str(const T& value) {
         std::ostringstream oss;
         oss << value;
@@ -28,11 +29,11 @@ namespace peaceFull {
     }
 
     // --- LEN ---
-    template<typename T>
+    export template<typename T>
     size_t len(const T& container) { return container.size(); }
 
     // --- RANGE ---
-    class range {
+    export class range {
         int start_, end_, step_;
     public:
         class iterator {
@@ -53,7 +54,7 @@ namespace peaceFull {
     };
 
     // --- LIST ---
-    template<typename T>
+    export template<typename T>
     struct list {
         std::vector<T> data;
 
@@ -92,7 +93,7 @@ namespace peaceFull {
     };
 
     // --- DICT ---
-    template<typename K, typename V>
+    export template<typename K, typename V>
     struct dict {
         std::map<K,V> data;
         V& operator[](const K& key) { return data[key]; }
@@ -100,27 +101,27 @@ namespace peaceFull {
     };
 
     // --- ANY / ALL ---
-    template<typename T, typename Func>
+    export template<typename T, typename Func>
     bool any(const std::vector<T>& vec, Func f) {
         for(const auto& v : vec) if(f(v)) return true;
         return false;
     }
 
-    template<typename T, typename Func>
+    export template<typename T, typename Func>
     bool all(const std::vector<T>& vec, Func f) {
         for(const auto& v : vec) if(!f(v)) return false;
         return true;
     }
 
     // --- MIN / MAX ---
-    template<typename T>
+    export template<typename T>
     T max(const std::vector<T>& vec) { return *std::max_element(vec.begin(), vec.end()); }
 
-    template<typename T>
+    export template<typename T>
     T min(const std::vector<T>& vec) { return *std::min_element(vec.begin(), vec.end()); }
 
     // --- SORTED / REVERSED ---
-    template<typename T>
+    export template<typename T>
     list<T> sorted(const std::vector<T>& vec, bool reverse=false) {
         list<T> result(vec.begin(), vec.end());
         std::sort(result.data.begin(), result.data.end());
@@ -128,7 +129,7 @@ namespace peaceFull {
         return result;
     }
 
-    template<typename T>
+    export template<typename T>
     list<T> reversed(const std::vector<T>& vec) {
         list<T> result(vec.begin(), vec.end());
         std::reverse(result.data.begin(), result.data.end());
@@ -136,7 +137,7 @@ namespace peaceFull {
     }
 
     // --- ZIP ---
-    template<typename T1, typename T2>
+    export template<typename T1, typename T2>
     list<std::pair<T1,T2>> zip(const std::vector<T1>& a, const std::vector<T2>& b) {
         list<std::pair<T1,T2>> result;
         size_t n = std::min(a.size(), b.size());
@@ -145,80 +146,80 @@ namespace peaceFull {
     }
 
     // --- MAP / FILTER ---
-    template<typename T, typename Func>
+    export template<typename T, typename Func>
     list<T> map(Func f, const std::vector<T>& vec) {
         list<T> result;
         for(auto& v : vec) result.append(f(v));
         return result;
     }
 
-    template<typename T, typename Func>
+    export template<typename T, typename Func>
     list<T> filter(Func f, const std::vector<T>& vec) {
         list<T> result;
         for(auto& v : vec) if(f(v)) result.append(v);
         return result;
     }
 
-    // --- REGEX UTIL ---+
-    namespace regex {
+    // --- REGEX UTIL ---
+    export namespace regex {
 
         using Match = std::smatch;
 
-        inline std::string sub(const std::string& pattern, const std::string& repl, const std::string& text) {
+        export inline std::string sub(const std::string& pattern, const std::string& repl, const std::string& text) {
             return std::regex_replace(text, std::regex(pattern), repl);
         }
 
-        inline std::optional<Match> M_match(const std::string& text, const std::string& pattern) {
+        export inline std::optional<Match> M_match(const std::string& text, const std::string& pattern) {
             std::regex r(pattern);
             std::smatch m;
             if (std::regex_match(text, m, r)) {
-                return m;  // coincidencia completa
+                return m;
             } else {
-                return std::nullopt;  // no coincide
+                return std::nullopt;
             }
         }
 
-        inline std::optional<Match> M_match(const std::string& text, const std::regex& pattern) {
+        export inline std::optional<Match> M_match(const std::string& text, const std::regex& pattern) {
             std::smatch m;
             if (std::regex_match(text, m, pattern)) {
-                return m;  // coincidencia completa
+                return m;
             } else {
-                return std::nullopt;  // no coincide
+                return std::nullopt;
             }
         }
 
-        inline bool match(const std::string& text, const std::string& pattern) {
+        export inline bool match(const std::string& text, const std::string& pattern) {
             return std::regex_match(text, std::regex(pattern));
         }
 
-        inline bool match(const std::string& text, const std::regex& pattern) {
+        export inline bool match(const std::string& text, const std::regex& pattern) {
             return std::regex_match(text, pattern);
         }
 
-        inline std::optional<Match> M_search(const std::string& pattern, const std::string& text) {
+        export inline std::optional<Match> M_search(const std::string& pattern, const std::string& text) {
             std::regex r(pattern);
             std::smatch m;
             if (std::regex_search(text, m, r)) {
-                return m;  // coincidencia completa
+                return m;
             } else {
-                return std::nullopt;  // no coincide
+                return std::nullopt;
             }
         }
 
-        inline std::optional<Match> M_search(const std::regex& pattern, const std::string& text) {
+        export inline std::optional<Match> M_search(const std::regex& pattern, const std::string& text) {
             std::smatch m;
             if (std::regex_search(text, m, pattern)) {
-                return m;  // coincidencia completa
+                return m;
             } else {
-                return std::nullopt;  // no coincide
+                return std::nullopt;
             }
         }
 
-        inline bool search(const std::string& pattern, const std::string& text) {
+        export inline bool search(const std::string& pattern, const std::string& text) {
             return std::regex_search(text, std::regex(pattern));
         }
 
-        inline bool search(const std::regex& pattern, const std::string& text) {
+        export inline bool search(const std::regex& pattern, const std::string& text) {
             return std::regex_search(text, pattern);
         }
     }

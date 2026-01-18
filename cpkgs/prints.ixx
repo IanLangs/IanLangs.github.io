@@ -1,11 +1,12 @@
-#pragma once
+export module prints;
+
 #include <iostream>
 #include <string>
 #include <vector>
 
-namespace prints {
+export namespace prints {
 
-    enum class Color {
+    export enum class Color {
         DEFAULT, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN, WHITE
     };
 
@@ -22,31 +23,30 @@ namespace prints {
         }
     }
 
-    inline void print() {
-        std::cout << "\n";
-    }
+    export inline void print() { std::cout << "\n"; }
 
-    template<typename T>
+    export template<typename T>
     void print(const T& value, const std::string& sep = " ", const std::string& end = "\n") {
         std::cout << value << end;
     }
 
-    template<typename T, typename... Args>
+    export template<typename T, typename... Args>
     void print(const T& first, const Args&... args, const std::string& sep = " ", const std::string& end = "\n") {
         std::cout << first;
         ((std::cout << sep << args), ...);
         std::cout << end;
     }
 
-    template<Color C, typename... Args>
+    export template<Color C, typename... Args>
     void printc(const Args&... args, const std::string& sep = " ", const std::string& end = "\n") {
         std::cout << colorCode(C);
         print(args..., sep, end);
         std::cout << colorCode(Color::DEFAULT);
     }
 
+    // Mejor no exportar operador<< directo para std::vector
     template<typename T>
-    std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+    std::ostream& vec_to_stream(std::ostream& os, const std::vector<T>& vec) {
         os << "[";
         for(size_t i = 0; i < vec.size(); ++i) {
             os << vec[i];
@@ -56,4 +56,4 @@ namespace prints {
         return os;
     }
 
-} // namespace prints
+}
