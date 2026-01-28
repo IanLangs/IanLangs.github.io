@@ -10,7 +10,8 @@ const projects = {
       { label: "Linux", file: "./RePylinux.zip" },
       { label: "Windows", file: "./RePywin.zip" }
     ],
-    github: "https://www.github.com/IanLangs/RePy"
+    github: "https://www.github.com/IanLangs/RePy",
+    haveGithub: true
   },
 
   pmake: {
@@ -20,7 +21,8 @@ const projects = {
     downloads: [
       { label: "Linux", file: "./PMAKElinux.zip" }
     ],
-    github: "https://www.github.com/IanLangs/PMAKE"
+    github: "https://www.github.com/IanLangs/PMAKE",
+    haveGithub: true
   },
 
   ipm: {
@@ -30,22 +32,45 @@ const projects = {
     downloads: [
       { label: "Linux", file: "./ipm.deb" }
     ],
-    github:"https://github.com/IanLangs/ipm"
+    github:"https://github.com/IanLangs/ipm",
+    haveGithub: true
   },
 
   cink: {
     rname:"c-ink",
     title:"Descargar c-ink",
-    desc:"Puedes descargar la última versión de ipm desde el siguiente enlace:",
+    desc:"Puedes descargar la última versión de c-ink desde el siguiente enlace:",
     downloads: [
       { label: "Linux", file: "./cink.deb" }
     ],
-    github:"https://github.com/IanLangs/c-ink"
+    github:"https://github.com/IanLangs/c-ink",
+    haveGithub: true
+  },
+
+  icc: {
+    rname:"icc",
+    title:"Descargar icc",
+    desc:"Puedes descargar la última versión de icc desde el siguiente enlace:",
+    downloads: [
+      {
+        label: "Linux (deb)",
+        file: "./icc.deb"
+      },
+      {
+        label: "Linux (rpm)",
+        file: "./icc.rpm"
+      },
+      {
+        label: "Windows (msi)",
+        file: "./icc.msi"
+      }
+    ],
+    github:"No have a only repo"
   },
 };
 
-const app = document.getElementById("app");
-const footer = document.getElementById("footer");
+const app = document.querySelector("#app");
+const footer = document.querySelector("#footer");
 
 const p = projects[name];
 
@@ -71,7 +96,7 @@ if (!p) {
     <ul>
       <li><a href="https://www.github.com/IanLangs">github de IanLangs</a></li>
       <li><a href="https://IanLangs.github.io">IanLangs.github.io</a></li>
-      <li><a href="${p.github}">${p.rname} github</a></li>
+      <li>${p.haveGithub == true ? `<a href="${p.github}">${p.rname}` : "no have"} github</a></li>
       <li>feedback en el repo de github</li>
     </ul>
   `;
