@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Flow-C++</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- Prism.js CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/themes/prism-okaidia.min.css" />
+
+    <!-- Prism.js JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.30.0/components/prism-cpp.min.js"></script>
+
+    <!-- Custom Flow-C++ syntax highlighting (optional) -->
+    <script>
+Prism.languages.flowcpp = Prism.languages.extend('cpp', {});
+
+// Definimos palabras clave de Flow-C++
+const flowKeywords = /\b(fn|defer|tagged union|any|anyP|str|wstr|loop|pub class|Cfn|until|unless)\b/g;
+const flowOperators = /\[\w+\]:\w+:|\[\w+\]:\w+:\?/g;
+const flowTypes = /\b(int|float|double|bool)\b/g;
+
+// Hook que se ejecuta después de que Prism tokeniza
+Prism.hooks.add('wrap', function(env) {
+    if(env.language === 'flowcpp') {
+        if(flowKeywords.test(env.content)) {
+            env.classes.push('flow-keyword');
+        } else if(flowOperators.test(env.content)) {
+            env.classes.push('flow-operator');
+        } else if(flowTypes.test(env.content)) {
+            env.classes.push('flow-type');
+        }
+    }
+});
+    </script>
+    <style>
+    /* Bloques de Flow-C++ */
+pre[class*="language-flowcpp"] {
+    background-color: #1e1e1e;       /* fondo oscuro tipo editor */
+    color: #f8f8f2;                  /* color base de texto */
+    font-family: 'Courier New', Courier, monospace; 
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+/* Código dentro del bloque */
+pre[class*="language-flowcpp"] code {
+    color: inherit; /* hereda el color base */
+    white-space: pre;
+}
+
+/* Opcional: destacar keywords de Flow-C++ manualmente */
+pre[class*="language-flowcpp"] code span[class*="flow-keyword"] { color: #8e44ad; font-weight: bold; }
+pre[class*="language-flowcpp"] code span[class*="flow-operator"] { color: #d662d6; font-weight: bold; }
+pre[class*="language-flowcpp"] code span[class*="flow-type"] { color: #bb8fce; font-weight: bold; }
+pre[class*="language-flowcpp"] code span[class*="flow-literal"] { color: #e67e22; font-weight: bold; }
+
+</style>
+</head>
+<body>
+    <header>
+        <h1>Manual de Flow-C++</h1>
+        <p>Referencia completa de tipos, keywords y estructuras de Flow-C++</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>1. Tipos fundamentales</h2>
+            <ul>
+                <li><strong>str</strong> – String gestionado por Flow-C++.</li>
+                <li><strong>wstr</strong> – String wide (Unicode).</li>
+                <li><strong>any</strong> – Contenedor genérico para cualquier valor.</li>
+                <li><strong>anyP</strong> – Equivalente a <code>shared_ptr&lt;any&gt;</code>.</li>
+            </ul>
+            <pre><code class="language-flowcpp">
+<span class="flow-type">str</span> mensaje = "hola";
+<span class="flow-type">wstr</span> wmensaje = L"hola";
+<span class="flow-type">any</span> a = 42;
+<span class="flow-type">any</span> b = <span class="flow-literal">str("hello")</span>;
+<span class="flow-type">anyP</span> ptr = std::make_shared&lt;<span class="flow-type">any</span>&gt;(b);
+</code></pre>
+
+        </section>
+
+        <section>
+            <h2>2. Casting y comprobación de tipos</h2>
+            <h3>2.1 [x]:T:</h3>
+            <p>Cast directo (inseguro) a tipo T. Útil cuando estás seguro del tipo.</p>
+            <pre><code class="language-flowcpp">
+<span class="flow-type">any</span> b = <span class="flow-literal">str("hello")</span>;
+<span class="flow-type">str</span> s = [b]:<span class="flow-type">str</span>:;
+</code></pre>
+
+            <h3>2.2 [x]:T:?</h3>
+            <p>Comprueba en runtime si x es del tipo T.</p>
+            <pre><code class="language-flowcpp">
+<span class="flow-type">any</span> a = 42;
+if ([a]:<span class="flow-type">int</span>:?) {
+    println("a es int");
+    <span class="flow-type">int</span> n = [a]:<span class="flow-type">int</span>:;
+}
+</code></pre>
+        </section>
+
+        <section>
+            <h2>3. Defer</h2>
+            <p>Ejecuta código al final del scope en orden inverso. Sintaxis: <code>defer código;;</code></p>
+            <pre><code class="language-flowcpp">
+auto d1 = <span class="flow-keyword">defer</span> println("Deferred 1");;
+auto d2 = <span class="flow-keyword">defer</span> println("Deferred 2");;
+</code></pre>
+        </section>
+
+        <section>
+            <h2>4. Tagged union</h2>
+            <p>Permite un tipo que puede contener una de varias variantes con tag y value.</p>
+            <pre><code class="language-flowcpp">
+<span class="flow-keyword">tagged union</span>[2] Resultado&lt;<span class="flow-type">int</span>, <span class="flow-type">int</span>&gt; {<span class="flow-keyword">Ok</span>, <span class="flow-keyword">Err</span>}
+
+Resultado r;
+r = Resultado::<span class="flow-keyword">Err</span>;
+r = -1;
+
+<span class="flow-keyword">switch</span>(r) {
+    case Resultado::<span class="flow-keyword">Ok</span>:
+        println("Ok = ", r.value.Ok);
+        break;
+    case Resultado::<span class="flow-keyword">Err</span>:
+        println("Err = ", r.value.Err);
+        break;
+}
+</code></pre>
+        </section>
+
+        <section>
+            <h2>5. Funciones</h2>
+            <pre><code class="language-flowcpp">
+template &lt;typename T&gt;
+<span class="flow-keyword">fn</span> make_any(T x) -&gt; <span class="flow-type">any</span> {
+    return x;
+}
+</code></pre>
+        </section>
+
+        <section>
+            <h2>6. Loops y condicionales</h2>
+            <p>Flow-C++ soporta <code>for</code>, <code>while</code>, <code>if</code>, <code>until</code> y <code>unless</code>.</p>
+            <pre><code class="language-flowcpp">
+<span class="flow-type">int</span> total = 0;
+<span class="flow-keyword">for</span>(<span class="flow-type">int</span> i = 1; i &lt;= 5; i++) {
+    total += i;
+}
+
+<span class="flow-keyword">until</span>(total &gt; 10) {
+    total += 1;
+}
+
+<span class="flow-keyword">unless</span>(total &gt; 20) {
+    println("Sigue dentro del rango");
+}
+</code></pre>
+        </section>
+
+        <section>
+            <h2>7. Switch / Case</h2>
+            <p>Funciona como C++ y permite usar tagged unions.</p>
+            <pre><code class="language-flowcpp">
+<span class="flow-keyword">switch</span>(r) {
+    case Resultado::<span class="flow-keyword">Ok</span>:
+        println("Ok = ", r.value.Ok);
+        break;
+    case Resultado::<span class="flow-keyword">Err</span>:
+        println("Err = ", r.value.Err);
+        break;
+}
+</code></pre>
+        </section>
+
+        <section>
+            <h2>8. Imports y alias de tipos</h2>
+            <pre><code class="language-flowcpp">
+#import mylocallib //importa mylocallib.fhpp
+template &lt;typename T&gt;
+<span class="flow-keyword">type</span> Matrix = std::vector&lt;std::vector&lt;&lt;T&gt&gt;;
+
+<span class="flow-keyword">type</span> StrVector = std::vector&lt;<span class="flow-type">str</span>&gt;
+</code></pre>
+
+        <section>
+            <h2>9. Otros keywords</h2>
+            <ul>
+                <li><strong>Cfn</strong> – Función con linkage C (<code>extern "C"</code>).</li>
+                <li><strong>loop</strong> – Bucle infinito (<code>while(true)</code>).</li>
+                <li><strong>pub class</strong> – Clase 100% pública.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>10. Resumen rápido de [x]:T: y [x]:T:?</h2>
+            <table>
+                <tr><th>Operador</th><th>Qué hace</th><th>Ejemplo</th></tr>
+                <tr><td>[x]:T:</td><td>Cast directo/inseguro a tipo T</td><td>str s = [b]:str:;</td></tr>
+                <tr><td>[x]:T:?</td><td>Comprueba si x es de tipo T en runtime</td><td>if ([a]:int:?) { ... }</td></tr>
+                <tr><td>[x]:T:? + [x]:T:</td><td>Comprobar y castear seguro dentro de if</td><td>if ([a]:int:?) { int n = [a]:int:; }</td></tr>
+            </table>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Flow-C++ Manual - Ian 2026</p>
+    </footer>
+</body>
+</html>
